@@ -1,0 +1,18 @@
+{
+  "name": "Oromia AI Academy",
+  "short_name": "OromiaAI",
+  "description": "Barnoota fi Qormaata Afaan Oromoo AI waliin",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
