@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Oromia AI Academy</title>
+    <title>Oromiyaa AI</title>
 
-    <!-- PWA Manifest & Meta Tags for APK -->
+    <!-- PWA Meta Tags -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0f172a">
     <meta name="mobile-web-app-capable" content="yes">
@@ -27,20 +27,21 @@
 
     <div class="w-full max-w-md bg-slate-50 min-h-screen shadow-2xl relative overflow-x-hidden flex flex-col justify-between">
 
-        <!-- ==================== 1. SCREEN: AUTH / LOGIN ==================== -->
-        <div id="screen-auth" class="app-screen active min-h-screen flex flex-col justify-between p-6 bg-gradient-to-b from-slate-900 via-blue-950 to-slate-900 text-white">
-            <div class="text-center pt-10 space-y-3">
+        <!-- ==================== 1. FULLSCREEN AUTH / LOGIN OVERLAY (STRICT FULLSCREEN) ==================== -->
+        <div id="screen-auth" class="app-screen active fixed inset-0 z-[99999] min-h-screen flex flex-col justify-between p-6 bg-gradient-to-b from-slate-950 via-blue-950 to-slate-950 text-white overflow-y-auto">
+            <div class="text-center pt-8 space-y-3">
                 <div class="w-24 h-24 bg-blue-600/20 border-2 border-blue-500/40 rounded-3xl flex items-center justify-center mx-auto shadow-xl shadow-blue-500/10">
                     <i class="fa-solid fa-graduation-cap text-4xl text-blue-400"></i>
                 </div>
-                <h1 class="text-2xl font-black tracking-tight">Oromia AI Academy</h1>
-                <p class="text-xs text-blue-200/80 font-medium">Sirna Barnootaa & Qormaata Ammayyaa</p>
+                <h1 class="text-2xl font-black tracking-tight">Oromiyaa AI</h1>
+                <p class="text-xs text-blue-200/80 font-medium">Akkaadaamii Barnoota & Qormaata AI</p>
             </div>
 
-            <div class="bg-white text-slate-800 rounded-3xl p-6 space-y-4 shadow-2xl">
+            <!-- Login Card -->
+            <div class="bg-white text-slate-800 rounded-3xl p-6 space-y-4 shadow-2xl my-auto">
                 <div class="text-center space-y-1">
                     <h2 class="text-base font-extrabold text-slate-900">Seensa / Login</h2>
-                    <p class="text-xs text-slate-500">Akkaataa seensaa filadhaa</p>
+                    <p class="text-xs text-slate-500">Mootummaa barnootaatti seenuuf filadhaa</p>
                 </div>
 
                 <button onclick="handleGoogleLogin()" class="w-full bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 font-bold py-3.5 px-4 rounded-2xl text-xs flex items-center justify-center gap-3 shadow-sm active:scale-95 transition">
@@ -59,11 +60,13 @@
                 </button>
             </div>
 
-            <p class="text-center text-[10px] text-slate-400">© 2026 Oromia AI Academy • APK & Web Edition</p>
+            <p class="text-center text-[10px] text-slate-400 pb-2">© 2026 Oromiyaa AI • Official App Edition</p>
         </div>
 
+
         <!-- ==================== 2. SCREEN: HOME DASHBOARD ==================== -->
-        <div id="screen-home" class="app-screen p-5 space-y-4">
+        <div id="screen-home" class="app-screen p-5 space-y-4 pb-24">
+            <!-- Header User Card -->
             <div class="flex items-center justify-between bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
                 <div class="flex items-center gap-3">
                     <div class="relative">
@@ -80,12 +83,14 @@
                 </div>
             </div>
 
+            <!-- Main Banner -->
             <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 p-5 text-white shadow-xl shadow-blue-500/20">
                 <span class="bg-white/20 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Misooma Barataa</span>
                 <h2 class="text-lg font-black mt-2">Barnoota fi Qormaata</h2>
                 <p class="text-xs text-blue-100 mt-0.5">Har'a baradhu, boru bulchaa!</p>
             </div>
 
+            <!-- 4 Grid Cards -->
             <div class="grid grid-cols-2 gap-3.5">
                 <div onclick="navigateTo('screen-lessons')" class="bg-blue-500 text-white p-4 rounded-3xl shadow-md shadow-blue-500/20 flex flex-col justify-between h-32 cursor-pointer active:scale-95 transition">
                     <i class="fa-solid fa-book-open text-2xl"></i>
@@ -120,6 +125,7 @@
                 </div>
             </div>
 
+            <!-- Admin Quick Actions (ONLY for Admin) -->
             <div id="admin-home-actions" class="hidden bg-purple-50 border border-purple-200 rounded-3xl p-4 space-y-2">
                 <div class="flex items-center justify-between">
                     <span class="text-[11px] font-black text-purple-800 uppercase tracking-wider">🛠️ Bulchaa / Admin Quick Menu</span>
@@ -136,8 +142,9 @@
             </div>
         </div>
 
-        <!-- ==================== 3. SCREEN: QORMAATA LIST & SEARCH ==================== -->
-        <div id="screen-categories" class="app-screen p-5 space-y-4">
+
+        <!-- ==================== 3. SCREEN: QORMAATA LIST ==================== -->
+        <div id="screen-categories" class="app-screen p-5 space-y-4 pb-24">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <button onclick="navigateTo('screen-home')" class="w-9 h-9 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-600">
@@ -153,15 +160,14 @@
                 </button>
             </div>
 
-            <div class="relative">
-                <input type="text" id="quiz-search-input" onkeyup="filterQuizzesList()" placeholder="🔍 Qormaata barbaadi..." class="w-full bg-white border border-slate-200 rounded-2xl py-2.5 px-4 text-xs outline-none shadow-sm">
-            </div>
+            <input type="text" id="quiz-search-input" onkeyup="filterQuizzesList()" placeholder="🔍 Qormaata barbaadi..." class="w-full bg-white border border-slate-200 rounded-2xl py-2.5 px-4 text-xs outline-none shadow-sm">
 
             <div id="quizzes-container" class="space-y-3"></div>
         </div>
 
-        <!-- ==================== 4. SCREEN: QUIZ PLAY ENGINE ==================== -->
-        <div id="screen-quiz-play" class="app-screen p-5 space-y-4">
+
+        <!-- ==================== 4. SCREEN: QUIZ PLAY ==================== -->
+        <div id="screen-quiz-play" class="app-screen p-5 space-y-4 pb-24">
             <div class="flex items-center justify-between">
                 <button onclick="confirmExitQuiz()" class="w-8 h-8 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-600">
                     <i class="fa-solid fa-arrow-left text-xs"></i>
@@ -193,8 +199,9 @@
             </div>
         </div>
 
+
         <!-- ==================== 5. SCREEN: QUIZ RESULT ==================== -->
-        <div id="screen-quiz-result" class="app-screen p-6 text-center space-y-5 pt-10">
+        <div id="screen-quiz-result" class="app-screen p-6 text-center space-y-5 pt-10 pb-24">
             <div class="w-24 h-24 bg-amber-100 text-amber-500 rounded-full flex items-center justify-center mx-auto border-4 border-amber-200 shadow-xl animate-bounce">
                 <i class="fa-solid fa-trophy text-4xl"></i>
             </div>
@@ -215,8 +222,9 @@
             </div>
         </div>
 
+
         <!-- ==================== 6. SCREEN: DETAILED RESULTS ==================== -->
-        <div id="screen-result-detail" class="app-screen p-5 space-y-4">
+        <div id="screen-result-detail" class="app-screen p-5 space-y-4 pb-24">
             <div class="flex items-center gap-3">
                 <button onclick="navigateTo('screen-home')" class="w-8 h-8 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-600">
                     <i class="fa-solid fa-arrow-left text-xs"></i>
@@ -241,8 +249,9 @@
             <div id="detail-answers-list" class="bg-white border border-slate-200 rounded-2xl divide-y divide-slate-100 text-xs shadow-sm"></div>
         </div>
 
-        <!-- ==================== 7. SCREEN: BARNOOTA (LESSONS) ==================== -->
-        <div id="screen-lessons" class="app-screen p-5 space-y-4">
+
+        <!-- ==================== 7. SCREEN: BARNOOTA ==================== -->
+        <div id="screen-lessons" class="app-screen p-5 space-y-4 pb-24">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <button onclick="navigateTo('screen-home')" class="w-8 h-8 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-600">
@@ -263,8 +272,9 @@
             <div id="lessons-list-container" class="space-y-3"></div>
         </div>
 
+
         <!-- ==================== 8. SCREEN: LEADERBOARD ==================== -->
-        <div id="screen-leaderboard" class="app-screen p-5 space-y-4">
+        <div id="screen-leaderboard" class="app-screen p-5 space-y-4 pb-24">
             <div class="flex items-center gap-3">
                 <button onclick="navigateTo('screen-home')" class="w-8 h-8 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-600">
                     <i class="fa-solid fa-arrow-left text-xs"></i>
@@ -278,8 +288,9 @@
             <div id="leaderboard-container" class="space-y-2"></div>
         </div>
 
+
         <!-- ==================== 9. SCREEN: PROFILE ==================== -->
-        <div id="screen-profile" class="app-screen p-5 space-y-5">
+        <div id="screen-profile" class="app-screen p-5 space-y-5 pb-24">
             <div class="flex items-center gap-3">
                 <button onclick="navigateTo('screen-home')" class="w-8 h-8 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-600">
                     <i class="fa-solid fa-arrow-left text-xs"></i>
@@ -310,8 +321,9 @@
             </div>
         </div>
 
+
         <!-- ==================== 10. SCREEN: EDIT PROFILE ==================== -->
-        <div id="screen-profile-edit" class="app-screen p-5 space-y-4">
+        <div id="screen-profile-edit" class="app-screen p-5 space-y-4 pb-24">
             <div class="flex items-center gap-3">
                 <button onclick="navigateTo('screen-profile')" class="w-8 h-8 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-600"><i class="fa-solid fa-arrow-left text-xs"></i></button>
                 <h2 class="font-bold text-base text-slate-900">Odeeffannoo Profile</h2>
@@ -323,8 +335,9 @@
             </div>
         </div>
 
-        <!-- ==================== 11. SCREEN: FULL ADMIN DASHBOARD ==================== -->
-        <div id="screen-admin" class="app-screen p-5 space-y-4">
+
+        <!-- ==================== 11. SCREEN: ADMIN DASHBOARD ==================== -->
+        <div id="screen-admin" class="app-screen p-5 space-y-4 pb-24">
             <div class="flex items-center justify-between border-b border-slate-200 pb-3">
                 <div>
                     <span class="text-[10px] font-extrabold text-purple-600 uppercase">Bulchaa Qofa</span>
@@ -333,21 +346,18 @@
                 <button onclick="navigateTo('screen-home')" class="text-xs bg-slate-200 px-3 py-1.5 rounded-xl font-bold">Exit</button>
             </div>
 
-            <!-- Tab Buttons -->
             <div class="flex gap-2 border-b border-slate-200 pb-2">
                 <button onclick="switchAdminTab('quiz')" id="btn-admin-quiz" class="text-xs font-bold text-purple-600 border-b-2 border-purple-600 pb-1 flex-1">Qormaata & AI</button>
                 <button onclick="switchAdminTab('lesson')" id="btn-admin-lesson" class="text-xs font-bold text-slate-400 pb-1 flex-1">Barnoota</button>
                 <button onclick="switchAdminTab('students')" id="btn-admin-students" class="text-xs font-bold text-slate-400 pb-1 flex-1">Barattoota & Qabxii</button>
             </div>
 
-            <!-- TAB A: QUIZ CREATION (AI, OCR, TEXT & SCHEDULE) -->
             <div id="admin-quiz-section" class="space-y-4">
                 <div class="bg-purple-100/70 p-1.5 rounded-2xl flex gap-1 text-xs font-bold">
                     <button onclick="setQuizCreationMethod('ai')" id="btn-method-ai" class="flex-1 py-2 rounded-xl bg-purple-700 text-white shadow-sm transition">✨ 1. AI Generator</button>
                     <button onclick="setQuizCreationMethod('manual')" id="btn-method-manual" class="flex-1 py-2 rounded-xl text-purple-900 transition">✍️ 2. Harkaan Barreessi</button>
                 </div>
 
-                <!-- AI Card -->
                 <div id="box-create-ai" class="bg-gradient-to-br from-purple-900 to-indigo-950 text-white p-5 rounded-3xl space-y-3 text-xs shadow-lg">
                     <div class="flex items-center justify-between">
                         <span class="bg-amber-400 text-purple-950 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase">✨ AI GENERATOR</span>
@@ -404,10 +414,9 @@
                     </button>
                 </div>
 
-                <!-- Manual Card -->
                 <div id="box-create-manual" class="hidden bg-white border border-slate-200 p-5 rounded-3xl space-y-3 text-xs shadow-sm">
-                    <h3 class="font-bold text-slate-900 uppercase">✍️ Harkaan Qormaata & Gaaffii Qopheessi</h3>
-                    <input type="text" id="manual-quiz-title" placeholder="Mata-duree Qormaataa (fkn: Matematikaa)" class="w-full border border-slate-200 rounded-xl p-2.5 outline-none">
+                    <h3 class="font-bold text-slate-900 uppercase">✍️ Harkaan Qormaata Qopheessi</h3>
+                    <input type="text" id="manual-quiz-title" placeholder="Mata-duree Qormaataa" class="w-full border border-slate-200 rounded-xl p-2.5 outline-none">
                     
                     <div class="grid grid-cols-3 gap-2">
                         <div>
@@ -427,7 +436,7 @@
                     <div class="border-t border-slate-100 pt-3 space-y-2">
                         <label class="font-bold text-slate-700 block">Gaaffii Dabali:</label>
                         <input type="text" id="manual-q-text" placeholder="Gaaffii barreessi..." class="w-full border border-slate-200 rounded-xl p-2.5 outline-none">
-                        <input type="text" id="manual-opts" placeholder="Filannoowwan 4 komaadhaan (fkn: A, B, C, D)" class="w-full border border-slate-200 rounded-xl p-2.5 outline-none">
+                        <input type="text" id="manual-opts" placeholder="Filannoowwan 4 komaadhaan: A, B, C, D" class="w-full border border-slate-200 rounded-xl p-2.5 outline-none">
                         <input type="number" id="manual-corr" placeholder="Index deebii sirrii (0=A, 1=B, 2=C, 3=D)" class="w-full border border-slate-200 rounded-xl p-2.5 outline-none">
                     </div>
 
@@ -437,11 +446,10 @@
                 </div>
             </div>
 
-            <!-- TAB B: LESSONS MANAGEMENT -->
             <div id="admin-lesson-section" class="hidden space-y-4">
                 <div class="bg-white border border-slate-200 p-4 rounded-3xl space-y-3 text-xs shadow-sm">
                     <h3 class="font-bold text-slate-900 uppercase">📚 Barnoota Haaraa Fe'i</h3>
-                    <input type="text" id="lesson-title" placeholder="Mata-duree Barnootaa (fkn: Python Kutaa 1ffaa)" class="w-full border border-slate-200 rounded-xl p-2.5 outline-none">
+                    <input type="text" id="lesson-title" placeholder="Mata-duree Barnootaa" class="w-full border border-slate-200 rounded-xl p-2.5 outline-none">
                     <textarea id="lesson-content" placeholder="Qabiyyee barreeffama barnootaa..." rows="4" class="w-full border border-slate-200 rounded-xl p-2.5 outline-none"></textarea>
                     
                     <div>
@@ -460,7 +468,6 @@
                 </div>
             </div>
 
-            <!-- TAB C: STUDENTS TRACKER & FULL DELETION CONTROLS -->
             <div id="admin-students-section" class="hidden space-y-3">
                 <div class="flex items-center justify-between">
                     <h3 class="font-bold text-slate-700 text-xs uppercase">Barattoota Dhuguma Qoraman</h3>
@@ -473,8 +480,9 @@
             </div>
         </div>
 
-        <!-- ==================== BOTTOM NAV ==================== -->
-        <div id="bottom-nav" class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white border-t border-slate-200 py-2.5 px-4 flex justify-around items-center z-50 shadow-lg">
+
+        <!-- ==================== STRICT HIDDEN BOTTOM NAV ON AUTH SCREEN ==================== -->
+        <div id="bottom-nav" class="hidden fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white border-t border-slate-200 py-2.5 px-4 flex justify-around items-center z-50 shadow-lg">
             <button onclick="navigateTo('screen-home')" id="nav-home" class="flex flex-col items-center gap-0.5 text-blue-600 font-bold text-[10px]">
                 <i class="fa-solid fa-house text-base"></i><span>Home</span>
             </button>
@@ -502,7 +510,7 @@
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('sw.js').then(reg => {
-                    console.log('ServiceWorker registered for PWA/APK:', reg.scope);
+                    console.log('ServiceWorker registered:', reg.scope);
                 }).catch(err => {
                     console.log('ServiceWorker registration failed:', err);
                 });
