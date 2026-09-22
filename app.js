@@ -3,29 +3,26 @@ if (window.pdfjsLib) {
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 }
 
-// Admin Identifiers (Telegram IDs & Google Emails)
 const ADMIN_IDENTIFIERS = ["7153199002", "8933809355", "admin@gmail.com", "suufiyaan@gmail.com"];
 
 let currentUser = JSON.parse(localStorage.getItem('auth_user')) || null;
 
-// Check Telegram Mini App session
-let tg = window.Telegram ? window.Telegram.WebApp : null;
-if (tg) {
-    tg.ready();
-    tg.expand();
-    if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-        let tu = tg.initDataUnsafe.user;
-        currentUser = {
-            id: String(tu.id),
-            name: tu.first_name + " " + (tu.last_name || ""),
-            username: tu.username ? "@" + tu.username : "@user_" + tu.id,
-            provider: 'Telegram'
-        };
-        localStorage.setItem('auth_user', JSON.stringify(currentUser));
-    }
-}
+// Real Databases
+let quizzes = JSON.parse(localStorage.getItem('quizzes_db')) || [];
+let lessons = JSON.parse(localStorage.getItem('lessons_db')) || [];
+let studentAttempts = JSON.parse(localStorage.getItem('attempts_db')) || [];
+let isAdminUser = false;
 
-// Authentication
+// Check session on load
+window.addEventListener('DOMContentLoaded', () => {
+    if (currentUser) {
+        applyUserSession();
+    } else {
+        document.getElementById('bottom-nav').classList.add('hidden');
+        navigateTo('screen-auth');
+    }
+});
+
 function handleGoogleLogin() {
     let email = prompt("Google Email keessan galchaa:", "barataa@gmail.com");
     if (!email) return;
@@ -57,11 +54,10 @@ function logoutUser() {
     if (confirm("Ba'uu (Logout) barbaadduu?")) {
         localStorage.removeItem('auth_user');
         currentUser = null;
+        document.getElementById('bottom-nav').classList.add('hidden');
         location.reload();
     }
 }
-
-let isAdminUser = false;
 
 function applyUserSession() {
     if (!currentUser) return;
@@ -94,6 +90,10 @@ function applyUserSession() {
         document.getElementById('profile-role-status').innerHTML = 'Barataa • <span class="text-emerald-500 font-bold">Online</span>';
     }
 
+    // Hide Login screen and SHOW Bottom Nav
+    document.getElementById('screen-auth').classList.remove('active');
+    document.getElementById('bottom-nav').classList.remove('hidden');
+
     renderSubjectsList();
     renderLessonsList();
     updateRealProfileStats();
@@ -101,19 +101,16 @@ function applyUserSession() {
     navigateTo('screen-home');
 }
 
-// Real Databases
-let quizzes = JSON.parse(localStorage.getItem('quizzes_db')) || [];
-let lessons = JSON.parse(localStorage.getItem('lessons_db')) || [];
-let studentAttempts = JSON.parse(localStorage.getItem('attempts_db')) || [];
-
 function navigateTo(screenId) {
     document.querySelectorAll('.app-screen').forEach(s => s.classList.remove('active'));
     document.getElementById(screenId).classList.add('active');
 
     if (screenId === 'screen-quiz-play' || screenId === 'screen-auth') {
-        document.getElementById('bottom-nav').style.display = 'none';
+        document.getElementById('bottom-nav').classList.add('hidden');
     } else {
-        document.getElementById('bottom-nav').style.display = 'flex';
+        if (currentUser) {
+            document.getElementById('bottom-nav').classList.remove('hidden');
+        }
     }
 
     if (screenId === 'screen-categories') renderSubjectsList();
@@ -148,7 +145,8 @@ function renderSubjectsList(filterText = "") {
 
     list.forEach((quiz, idx) => {
         let startTime = quiz.start_time ? new Date(quiz.start_time).getTime() : 0;
-        let endTime = quiz.end_time ? new Date(quiz.end_time).getTime() : Infinity;
+        let endTime = quiz.end
+_time ? new Date(quiz.end_time).getTime() : Infinity;
 
         let isUpcoming = startTime > now;
         let isExpired = now > endTime;
@@ -242,7 +240,7 @@ function filterLessonsList() {
     renderLessonsList(q);
 }
 
-// --- LEADERBOARD ENGINE ---
+// Render Leaderboard
 function renderLeaderboard() {
     let container = document.getElementById('leaderboard-container');
     container.innerHTML = "";
@@ -275,7 +273,7 @@ function renderLeaderboard() {
     });
 }
 
-// --- EXAM ENGINE ---
+// Quiz Play
 let activeQuizIdx = 0;
 let activeQIdx = 0;
 let quizTimerTotalSeconds = 0;
@@ -453,13 +451,12 @@ function updateRealProfileStats() {
     document.getElementById('profile-stat-rank').innerText = rankLabel;
 }
 
-// --- ADMIN FULL DELETE CAPABILITIES ---
+// Delete Controls
 function deleteQuiz(idx) {
-    if (confirm("Qormaata kana guutummaatti haquu barbaadduu?")) {
+    if (confirm("Qormaata kana haquu barbaadduu?")) {
         quizzes.splice(idx, 1);
         localStorage.setItem('quizzes_db', JSON.stringify(quizzes));
         renderSubjectsList();
-        alert("🗑️ Qormaanni haqameera!");
     }
 }
 
@@ -468,7 +465,6 @@ function deleteLesson(idx) {
         lessons.splice(idx, 1);
         localStorage.setItem('lessons_db', JSON.stringify(lessons));
         renderLessonsList();
-        alert("🗑️ Barnoonni haqameera!");
     }
 }
 
@@ -489,11 +485,9 @@ function clearAllRealAttempts() {
         renderStudentsTracker();
         renderLeaderboard();
         updateRealProfileStats();
-        alert("🗑️ Ragaan barattootaa hundi haqameera!");
     }
 }
 
-// Render Students for Admin
 function renderStudentsTracker() {
     let container = document.getElementById('admin-students-list');
     container.innerHTML = "";
@@ -528,7 +522,6 @@ function renderStudentsTracker() {
     });
 }
 
-// Export CSV for Admin
 function exportResultsToCSV() {
     if (studentAttempts.length === 0) {
         alert("Ragaan export ta'u hin jiru!");
@@ -542,11 +535,10 @@ function exportResultsToCSV() {
     let url = window.URL.createObjectURL(blob);
     let a = document.createElement('a');
     a.href = url;
-    a.download = `Oromia_Academy_Results_${Date.now()}.csv`;
+    a.download = `Oromiyaa_AI_Results_${Date.now()}.csv`;
     a.click();
 }
 
-// Switch Admin Tab
 function switchAdminTab(tab) {
     document.getElementById('admin-quiz-section').classList.add('hidden');
     document.getElementById('admin-lesson-section').classList.add('hidden');
@@ -582,7 +574,6 @@ function setQuizCreationMethod(method) {
     }
 }
 
-// Text Extractors
 async function extractTextFromPDF(file) {
     const arrayBuffer = await file.arrayBuffer();
     const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
@@ -600,7 +591,6 @@ async function extractTextFromImage(file) {
     return result.data.text.trim();
 }
 
-// AI Generator
 async function generateAIQuizSmart() {
     let topic = document.getElementById('ai-topic-title').value.trim();
     let desiredCount = parseInt(document.getElementById('ai-q-count').value) || 10;
